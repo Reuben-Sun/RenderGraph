@@ -57,9 +57,9 @@ public partial class ReubenRenderPipeline
         {
             //Create Texture
             TextureHandle Albedo = CreateColorTexture(renderGraph, camera, "Albedo");
-            passData._Albedo = builder.UseColorBuffer(Albedo, 0);
+            passData._Albedo = builder.UseColorBuffer(Albedo, 0);   //使用 SV_Target0
             TextureHandle Emission = CreateColorTexture(renderGraph, camera, "Emission");
-            passData._Emission = builder.UseColorBuffer(Emission, 1);
+            passData._Emission = builder.UseColorBuffer(Emission, 1);   //使用 SV_Target1
             TextureHandle Depth = CreateDepthTexture(renderGraph, camera);
             passData._Depth = builder.UseDepthBuffer(Depth, DepthAccess.Write);
             
