@@ -60,7 +60,8 @@ public partial class ReubenRenderPipeline : RenderPipeline
 
         using (_RenderGraph.RecordAndExecute(rgParams))
         {
-            
+            BasePassData basePassData = RenderBasePass(mainCamera, _RenderGraph, cull);
+            RenderAddPass(_RenderGraph, basePassData._Albedo, basePassData._Emission);
         }
         
         context.ExecuteCommandBuffer(cmd);

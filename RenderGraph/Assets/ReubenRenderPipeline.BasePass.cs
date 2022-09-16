@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.Experimental.Rendering;
 using UnityEngine.Experimental.Rendering.RenderGraphModule;
 using UnityEngine.Rendering;
 
-public partial class ReubenRenderPipeline_BasePass
+public partial class ReubenRenderPipeline
 {
     private ShaderTagId _passName = new ShaderTagId("BasePass");
     
@@ -48,5 +49,44 @@ public partial class ReubenRenderPipeline_BasePass
         colorRTDesc.name = "Depth";
 
         return graph.CreateTexture(colorRTDesc);
+    }
+
+    public BasePassData RenderBasePass(Camera camera, RenderGraph renderGraph, CullingResults cull)
+    {
+        using (var builder = renderGraph.AddRenderPass<BasePassData>("Base Pass", out var passData, new ProfilingSampler("Base Pass Profiler")))
+        {
+            //Create Texture
+            TextureHandle Albedo = CreateColorTexture(renderGraph, camera, "Albedo");
+            passData._Albedo = builder.UseColorBuffer(Albedo, 0);
+            TextureHandle Emission = CreateColorTexture(renderGraph, camera, "Emission");
+            passData._Emission = builder.UseColorBuffer(Emission, 1);
+            TextureHandle Depth = CreateDepthTexture(renderGraph, camera);
+            passData._Depth = builder.UseDepthBuffer(Depth, DepthAccess.Write);
+            
+            //Renderer
+            UnityEngine.Rendering.RendererUtils.RendererListDesc OpaqueDesc = new UnityEngine.Rendering.RendererUtils.RendererListDesc(_passName, cull, camera);
+            OpaqueDesc.sortingCriteria = SortingCriteria.CommonOpaque;
+            OpaqueDesc.renderQueueRange = RenderQueueRange.opaque;
+            RendererListHandle OpaqueListHandle = renderGraph.CreateRendererList(OpaqueDesc);
+            passData._renderList_Qpaque = builder.UseRendererList(OpaqueListHandle);
+            
+            UnityEngine.Rendering.RendererUtils.RendererListDesc TransparentDesc = new UnityEngine.Rendering.RendererUtils.RendererListDesc(_passName, cull, camera);
+            TransparentDesc.sortingCriteria = SortingCriteria.CommonTransparent;
+            TransparentDesc.renderQueueRange = RenderQueueRange.transparent;
+            RendererListHandle TransparentListHandle = renderGraph.CreateRendererList(TransparentDesc);
+            passData._renderList_Transparent = builder.UseRendererList(TransparentListHandle);
+            
+            builder.SetRenderFunc((BasePassData data, RenderGraphContext context) =>
+            {
+                if (camera.clearFlags == CameraClearFlags.Skybox)
+                {
+                    context.renderContext.DrawSkybox(camera);
+                }
+                CoreUtils.DrawRendererList(context.renderContext, context.cmd, data._renderList_Qpaque);
+                CoreUtils.DrawRendererList(context.renderContext, context.cmd, data._renderList_Transparent);
+            });
+
+            return passData;
+        }
     }
 }
