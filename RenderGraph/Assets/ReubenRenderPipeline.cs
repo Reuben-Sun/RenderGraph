@@ -64,7 +64,10 @@ public partial class ReubenRenderPipeline : RenderPipeline
             RenderAddPass(_RenderGraph, new ShadingPassData()
             {
                 _MRT0 = gBufferPassData._MRT0,
-                _MRT1 = gBufferPassData._MRT1
+                _MRT1 = gBufferPassData._MRT1,
+                _MRT2 = gBufferPassData._MRT2,
+                _MRT3 = gBufferPassData._MRT3,
+                _Depth = gBufferPassData._Depth
             });
         }
         

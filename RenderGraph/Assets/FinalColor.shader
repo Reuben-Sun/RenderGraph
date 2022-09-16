@@ -39,14 +39,17 @@ Shader "RenderGraph/FinalColor"
 			CBUFFER_START(UnityPerMaterial)
 			sampler2D _MRT0;
 			sampler2D _MRT1;
+			sampler2D _MRT2;
+			sampler2D _MRT3;
+			sampler2D _Depth;
 			CBUFFER_END
 
 			float4 frag (v2f i) : SV_Target
 			{
 				float4 albedo = tex2D(_MRT0, i.uv);
 				float4 emission = tex2D(_MRT1, i.uv);
-
-				return albedo + emission;
+				float depth = tex2D(_Depth, i.uv).r;
+				return depth;
 			}
 			ENDHLSL
         }
