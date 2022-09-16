@@ -11,7 +11,7 @@ Shader "RenderGraph/OpaqueUnlit"
 
         Pass
         {
-        	Tags{"LightMode" = "BasePass"}
+        	Tags{"LightMode" = "GBufferPass"}
         	
             HLSLPROGRAM
 			#pragma vertex vert
@@ -38,21 +38,23 @@ Shader "RenderGraph/OpaqueUnlit"
 				return o;
 			}
 
-            struct MRT
+            struct GBuffer
             {
-	            float4 Albedo : SV_Target0;
-				float4 Emission : SV_Target1;
+	            float4 MRT0 : SV_Target0;		//RGB: Albedo, A: shadow
+				float4 MRT1 : SV_Target1;		//RGB: Emission + fog.xyz
+				float4 MRT2 : SV_Target2;		//RGB: EncodeNormal.xyz, A: ShadingMode
+				float4 MRT3 : SV_Target3;		//R: Metallic, G: Roughness, B:Occlusion, A: fog.w
             };
 			CBUFFER_START(UnityPerMaterial)
 
 			CBUFFER_END
 
-			MRT frag (v2f i) : SV_Target
+			GBuffer frag (v2f i) : SV_Target
 			{
-				MRT mrt;
-				mrt.Albedo = half4(0.6, 0, 0.1, 1);
-				mrt.Emission = half4(0.2, 0.2, 0.2, 1);
-				return mrt;
+				GBuffer gbuffer;
+				gbuffer.MRT0 = half4(0.6, 0, 0.1, 1);
+				gbuffer.MRT1 = half4(0.2, 0.2, 0.2, 1);
+				return gbuffer;
 			}
 			ENDHLSL
         }

@@ -37,14 +37,14 @@ Shader "RenderGraph/FinalColor"
 			}
 
 			CBUFFER_START(UnityPerMaterial)
-			sampler2D _CameraAlbedoTexture;
-			sampler2D _CameraEmissionTexture;
+			sampler2D _MRT0;
+			sampler2D _MRT1;
 			CBUFFER_END
 
 			float4 frag (v2f i) : SV_Target
 			{
-				float4 albedo = tex2D(_CameraAlbedoTexture, i.uv);
-				float4 emission = tex2D(_CameraEmissionTexture, i.uv);
+				float4 albedo = tex2D(_MRT0, i.uv);
+				float4 emission = tex2D(_MRT1, i.uv);
 
 				return albedo + emission;
 			}
