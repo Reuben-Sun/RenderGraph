@@ -14,7 +14,7 @@ Shader "RenderGraph/FinalColor"
 			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+			#include "Common.hlsl"
 
 			struct appdata
 			{
@@ -36,20 +36,10 @@ Shader "RenderGraph/FinalColor"
 				return o;
 			}
 
-			CBUFFER_START(UnityPerMaterial)
-			sampler2D _MRT0;
-			sampler2D _MRT1;
-			sampler2D _MRT2;
-			sampler2D _MRT3;
-			sampler2D _Depth;
-			CBUFFER_END
-
 			float4 frag (v2f i) : SV_Target
 			{
-				float4 albedo = tex2D(_MRT0, i.uv);
-				float4 emission = tex2D(_MRT1, i.uv);
-				float depth = tex2D(_Depth, i.uv).r;
-				return depth;
+				SurfaceData surface = GetSurfaceData(i.uv);
+				return half4(surface.albedo, 1);	
 			}
 			ENDHLSL
         }

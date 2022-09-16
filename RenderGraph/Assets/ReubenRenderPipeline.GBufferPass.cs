@@ -53,7 +53,7 @@ public partial class ReubenRenderPipeline
         return graph.CreateTexture(colorRTDesc);
     }
 
-    public GBufferPassData RenderBasePass(Camera camera, RenderGraph renderGraph, CullingResults cull)
+    public GBufferPassData RenderGBufferPass(Camera camera, RenderGraph renderGraph, CullingResults cull)
     {
         using (var builder = renderGraph.AddRenderPass<GBufferPassData>("GBuffer Pass", out var passData, new ProfilingSampler("GBuffer Pass Profiler")))
         {
@@ -63,9 +63,9 @@ public partial class ReubenRenderPipeline
             TextureHandle _MRT1 = CreateColorTexture(renderGraph, camera, "_MRT1");
             passData._MRT1 = builder.UseColorBuffer(_MRT1, 1);   //使用 SV_Target1
             TextureHandle _MRT2 = CreateColorTexture(renderGraph, camera, "_MRT2");
-            passData._MRT2 = builder.UseColorBuffer(_MRT2, 2);   //使用 SV_Target1
+            passData._MRT2 = builder.UseColorBuffer(_MRT2, 2);   //使用 SV_Target2
             TextureHandle _MRT3 = CreateColorTexture(renderGraph, camera, "_MRT3");
-            passData._MRT3 = builder.UseColorBuffer(_MRT3, 3);   //使用 SV_Target1
+            passData._MRT3 = builder.UseColorBuffer(_MRT3, 3);   //使用 SV_Target3
             TextureHandle Depth = CreateDepthTexture(renderGraph, camera);
             passData._Depth = builder.UseDepthBuffer(Depth, DepthAccess.Write);
             
