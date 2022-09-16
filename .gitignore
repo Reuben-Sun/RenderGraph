@@ -1,0 +1,14 @@
+
+RenderGraph/.idea/
+
+RenderGraph/Library/
+
+RenderGraph/Logs/
+
+RenderGraph/obj/
+
+RenderGraph/UserSettings/
+
+RenderGraph/Assembly-CSharp.csproj
+
+RenderGraph/RenderGraph.sln
