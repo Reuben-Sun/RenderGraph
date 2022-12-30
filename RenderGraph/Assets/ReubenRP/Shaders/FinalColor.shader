@@ -14,7 +14,7 @@ Shader "RenderGraph/FinalColor"
 			HLSLPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
-			#include "Common.hlsl"
+			#include "../ShaderLibrary/Common.hlsl"
 
 			struct appdata
 			{
