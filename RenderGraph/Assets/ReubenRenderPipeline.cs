@@ -29,7 +29,7 @@ public partial class ReubenRenderPipeline : RenderPipeline
     {
         BeginFrameRendering(context, cameras);
         InitRenderGraph();
-        RenderGamera(context, cameras[0]);
+        RenderCamera(context, cameras[0]);
         _RenderGraph.EndFrame();
         EndFrameRendering(context, cameras);
     }
@@ -39,7 +39,7 @@ public partial class ReubenRenderPipeline : RenderPipeline
         CleanupRenderGraph();
     }
 
-    void RenderGamera(ScriptableRenderContext context, Camera mainCamera)
+    void RenderCamera(ScriptableRenderContext context, Camera mainCamera)
     {
         BeginCameraRendering(context, mainCamera);
 
