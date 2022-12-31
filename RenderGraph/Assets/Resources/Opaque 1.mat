@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Opaque
+  m_Name: Opaque 1
   m_Shader: {fileID: 4800000, guid: 65d1cacc39c98374e98df742cdb7a19b, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -41,7 +41,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 9c17046de92b0094ebd59bd5920a08c8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 99c6c7aa158f1a143a2771a563547221, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 0344174be13a7724683895aba84918d2, type: 3}
+        m_Texture: {fileID: 2800000, guid: c7da576ca661f284787bb9484d5a0ebc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -65,7 +65,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _RoughnessMap:
-        m_Texture: {fileID: 2800000, guid: 49bffba8d50826146aeb946be69c2f46, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6bfb9df1d360dc54bbd9af9b6f96bb27, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []

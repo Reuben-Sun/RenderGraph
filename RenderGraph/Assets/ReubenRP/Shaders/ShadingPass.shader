@@ -15,6 +15,7 @@ Shader "RenderGraph/ShadingPass"
 			#pragma vertex vert
 			#pragma fragment frag
 			#include "../ShaderLibrary/Common.hlsl"
+			#include "../ShaderLibrary/Light.hlsl"
 
 			struct appdata
 			{
@@ -39,7 +40,9 @@ Shader "RenderGraph/ShadingPass"
 			float4 frag (v2f i) : SV_Target
 			{
 				SurfaceData surface = GetSurfaceData(i.uv);
-				return half4(surface.albedo, 1);	
+				Light sunLight = GetDirectionalLight();
+				
+				return half4(surface.albedo * sunLight.color, 1);	
 			}
 			ENDHLSL
         }

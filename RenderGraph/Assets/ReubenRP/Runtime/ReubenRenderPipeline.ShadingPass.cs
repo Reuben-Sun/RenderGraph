@@ -33,7 +33,7 @@ namespace Rendering.Reuben
                 passData._Depth = builder.ReadTexture(gBufferPassOutput._Depth);
                 TextureHandle _Destination = CreateColorTexture(renderGraph, camera, "_Destination");
                 passData._Destination = builder.UseColorBuffer(_Destination, 0);
-                
+
                 builder.SetRenderFunc((ShadingPassData data, RenderGraphContext context) =>
                 {
                     passData.shadingPassMaterial.SetTexture("_MRT0",data._MRT0);
