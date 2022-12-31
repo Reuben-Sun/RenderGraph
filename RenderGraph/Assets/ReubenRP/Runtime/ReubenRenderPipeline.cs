@@ -23,7 +23,7 @@ namespace Rendering.Reuben
             BeginFrameRendering(context, cameras);
             
             
-            RenderCamera(context, cameras[0], m_RenderGraph);
+            RenderCamera(context, cameras[0]);
             m_RenderGraph.EndFrame();
             
             EndFrameRendering(context, cameras);
@@ -35,7 +35,7 @@ namespace Rendering.Reuben
             m_RenderGraph = null;
         }
     
-        void RenderCamera(ScriptableRenderContext context, Camera mainCamera, RenderGraph graph)
+        void RenderCamera(ScriptableRenderContext context, Camera mainCamera)
         {
             BeginCameraRendering(context, mainCamera);
     
@@ -48,7 +48,7 @@ namespace Rendering.Reuben
             CommandBuffer cmd = CommandBufferPool.Get(cmdName);
             RenderGraphParameters rgParams = new RenderGraphParameters()
             {
-                executionName = "Reuben Render Graph Excute",
+                executionName = "Reuben Render Graph Execute",
                 commandBuffer = cmd,
                 scriptableRenderContext = context,
                 currentFrameIndex = Time.frameCount
@@ -57,14 +57,8 @@ namespace Rendering.Reuben
             using (m_RenderGraph.RecordAndExecute(rgParams))
             {
                 GBufferPassData gBufferPassData = RenderGBufferPass(mainCamera, m_RenderGraph, cull);
-                RenderAddPass(m_RenderGraph, new ShadingPassData()
-                {
-                    _MRT0 = gBufferPassData._MRT0,
-                    _MRT1 = gBufferPassData._MRT1,
-                    _MRT2 = gBufferPassData._MRT2,
-                    _MRT3 = gBufferPassData._MRT3,
-                    _Depth = gBufferPassData._Depth
-                });
+                ShadingPassData shadingPassData = RenderShadingPass(mainCamera, m_RenderGraph, gBufferPassData);
+                RenderFinalBlitPass(mainCamera, m_RenderGraph, shadingPassData._Destination);
             }
             
             EndCameraRendering(context, mainCamera);

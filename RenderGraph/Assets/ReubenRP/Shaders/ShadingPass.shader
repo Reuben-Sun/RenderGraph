@@ -1,4 +1,4 @@
-Shader "RenderGraph/FinalColor"
+Shader "RenderGraph/ShadingPass"
 {
     Properties
     {
@@ -7,7 +7,7 @@ Shader "RenderGraph/FinalColor"
     {
         Pass
         {
-            Name "FinalColor"
+            Name "ShadingPass"
 
             Cull Off ZWrite Off ZTest Always
 	
