@@ -16,10 +16,7 @@ namespace Rendering.Reuben
             UnityEditor.AssetDatabase.CreateAsset(instance, "Assets/ReubenRenderGraph.asset");
         }
     #endif
-    
-        protected override RenderPipeline CreatePipeline()
-        {
-            return new ReubenRenderPipeline();
-        }
+
+        protected override RenderPipeline CreatePipeline() => new ReubenRenderPipeline(this);
     }
 }
