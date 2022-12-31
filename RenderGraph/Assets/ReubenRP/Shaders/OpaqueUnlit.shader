@@ -52,7 +52,7 @@ Shader "RenderGraph/OpaqueUnlit"
 			GBuffer frag (v2f i) : SV_Target
 			{
 				GBuffer gbuffer;
-				gbuffer.MRT0 = half4(0.6, 0, 0.1, 1);
+				gbuffer.MRT0 = half4(1,0,0, 1);
 				gbuffer.MRT1 = half4(0.2, 0.2, 0.2, 1);
 				gbuffer.MRT2 = half4(0.1, 0.1, 0.1, 1);
 				gbuffer.MRT3 = half4(0.1, 0.1, 0.1, 1);

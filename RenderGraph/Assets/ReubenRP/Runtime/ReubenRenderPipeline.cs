@@ -58,7 +58,8 @@ namespace Rendering.Reuben
             {
                 GBufferPassData gBufferPassData = RenderGBufferPass(mainCamera, m_RenderGraph, cull);
                 ShadingPassData shadingPassData = RenderShadingPass(mainCamera, m_RenderGraph, gBufferPassData);
-                RenderFinalBlitPass(mainCamera, m_RenderGraph, shadingPassData._Destination);
+                SkyPassData skyPassData = RenderSkyPass(mainCamera, m_RenderGraph, shadingPassData._Destination, gBufferPassData._Depth);
+                RenderFinalBlitPass(mainCamera, m_RenderGraph, skyPassData._Destination);
             }
             
             EndCameraRendering(context, mainCamera);

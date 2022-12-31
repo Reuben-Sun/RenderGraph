@@ -9,6 +9,7 @@ CBUFFER_START(UnityPerMaterial)
     sampler2D _MRT2;
     sampler2D _MRT3;
     sampler2D _Depth;
+    sampler2D _Source;
     sampler2D _Destination;
 CBUFFER_END
 
