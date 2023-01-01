@@ -11,6 +11,8 @@ CBUFFER_START(UnityPerMaterial)
     sampler2D _Depth;
     sampler2D _Source;
     sampler2D _Destination;
+    float4x4 MATRIX_I_VP;
+    float3 _MainCameraPosWS;
 CBUFFER_END
 
 struct SurfaceData

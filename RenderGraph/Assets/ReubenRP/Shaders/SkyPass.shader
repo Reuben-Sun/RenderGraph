@@ -23,8 +23,7 @@ Shader "RenderGraph/SkyPass"
 				float4 vertex : POSITION;
 				float2 uv : TEXCOORD;
 			};
-
-			float4x4 MATRIX_I_VP;
+			
 			samplerCUBE _Cubemap;
 			float4 _Tint;
 			

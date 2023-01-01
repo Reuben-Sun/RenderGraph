@@ -70,7 +70,7 @@ Shader "RenderGraph/OpaqueLit"
 
 			GBuffer frag (v2f i) : SV_Target
 			{
-				float3 albedo = tex2D(_MainTex, i.uv).rgb;
+				float3 albedo = tex2D(_MainTex, i.uv).rgb * _BaseColor;
 				float3 emission = 0;
 				//normal
 				float4 normalMap = tex2D(_NormalMap, i.uv);

@@ -56,6 +56,7 @@ namespace Rendering.Reuben
             using (m_RenderGraph.RecordAndExecute(rgParams))
             {
                 SetupDirectionalLight(cmd);
+                SetupCamera(cmd, mainCamera);
                 GBufferPassData gBufferPassData = RenderGBufferPass(mainCamera, m_RenderGraph, cull);
                 ShadingPassData shadingPassData = RenderShadingPass(mainCamera, m_RenderGraph, gBufferPassData);
                 SkyPassData skyPassData = RenderSkyPass(mainCamera, m_RenderGraph, shadingPassData._Destination, gBufferPassData._Depth);

@@ -28,15 +28,12 @@ namespace Rendering.Reuben
                 TextureHandle _Destination = CreateColorTexture(renderGraph, camera, "_Destination");
                 passData._Destination = builder.UseColorBuffer(_Destination, 0);
                 
-                Matrix4x4 inverseViewMatrix = Matrix4x4.Inverse(camera.worldToCameraMatrix);
-                Matrix4x4 inverseProjectionMatrix = Matrix4x4.Inverse(camera.projectionMatrix);
-                Matrix4x4 inverseViewProjection = inverseViewMatrix * inverseProjectionMatrix;
                 
                 if (passData.skyMaterial == null)
                 {
                     passData.skyMaterial = RenderSettings.skybox;
                 }
-                passData.skyMaterial.SetMatrix("MATRIX_I_VP", inverseViewProjection);
+                // passData.skyMaterial.SetMatrix("MATRIX_I_VP", inverseViewProjection);
 
                 builder.SetRenderFunc((SkyPassData data, RenderGraphContext context) =>
                 {
