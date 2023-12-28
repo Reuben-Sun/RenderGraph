@@ -66,6 +66,8 @@ namespace Rendering.Reuben
             EndCameraRendering(context, mainCamera);
             context.ExecuteCommandBuffer(cmd);
             CommandBufferPool.Release(cmd);
+            context.DrawGizmos(mainCamera, GizmoSubset.PreImageEffects);
+            context.DrawGizmos(mainCamera, GizmoSubset.PostImageEffects);
             context.Submit();
         }
     }
