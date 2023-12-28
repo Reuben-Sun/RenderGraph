@@ -11,8 +11,11 @@ namespace Rendering.Reuben
         void SetupDirectionalLight(CommandBuffer cmd)
         {
             Light sunLight = RenderSettings.sun;
-            cmd.SetGlobalVector(_DirectionalLightColorShaderId, sunLight.color);
-            cmd.SetGlobalVector(_DirectionalLightDirectionShaderId, -sunLight.transform.forward);
+            if (sunLight)
+            {
+                cmd.SetGlobalVector(_DirectionalLightColorShaderId, sunLight.color * sunLight.intensity);
+                cmd.SetGlobalVector(_DirectionalLightDirectionShaderId, -sunLight.transform.forward);
+            }
         }
     }
 }
