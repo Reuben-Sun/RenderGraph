@@ -12,3 +12,7 @@ RenderGraph/UserSettings/
 RenderGraph/Assembly-CSharp.csproj
 
 RenderGraph/RenderGraph.sln
+
+RenderGraph/.vsconfig
+
+RenderGraph/.vs/
