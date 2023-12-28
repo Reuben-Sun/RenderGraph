@@ -4,7 +4,7 @@
 
 基于Unity SRP RenderGraph的延迟渲染，目前还在开发中
 
-Unity版本2021.3.8f1
+Unity版本2022.3.14f1
 
 ![PBR](Image/PBR.png)
 
