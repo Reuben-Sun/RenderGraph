@@ -40,6 +40,23 @@ namespace Rendering.Reuben
     
             return graph.CreateTexture(colorRTDesc);
         }
+        
+        private TextureHandle CreateShadowMap(RenderGraph graph, int width, int height)
+        {
+            bool colorRT_sRGB = (QualitySettings.activeColorSpace == ColorSpace.Linear);
+    
+            //Texture description
+            TextureDesc colorRTDesc = new TextureDesc(width, height);
+            colorRTDesc.colorFormat = GraphicsFormatUtility.GetGraphicsFormat(RenderTextureFormat.Depth,colorRT_sRGB);
+            colorRTDesc.depthBufferBits = DepthBits.Depth24;
+            colorRTDesc.msaaSamples = MSAASamples.None;
+            colorRTDesc.enableRandomWrite = false;
+            colorRTDesc.clearBuffer = true;
+            colorRTDesc.clearColor = Color.black;
+            colorRTDesc.name = "ShadowMap";
+    
+            return graph.CreateTexture(colorRTDesc);
+        }
 
     }
 }
