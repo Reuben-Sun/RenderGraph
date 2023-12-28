@@ -9,14 +9,22 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Opaque 1
   m_Shader: {fileID: 4800000, guid: 65d1cacc39c98374e98df742cdb7a19b, type: 3}
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords:
+  - _ALBEDOMAP
+  - _METALLICMAP
+  - _NORMALMAP
+  - _ROUGHNESSMAP
+  m_InvalidKeywords:
+  - _GROUP1_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -74,6 +82,11 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
+    - _EnableAlbedoMap: 1
+    - _EnableMetallicMap: 1
+    - _EnableNormalMap: 1
+    - _EnableNormalmap: 1
+    - _EnableRoughnessMap: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -81,11 +94,15 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Roughness: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
+    - __float1: 0
+    - _float1: 0
+    - _group1: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
