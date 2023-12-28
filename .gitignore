@@ -16,3 +16,5 @@ RenderGraph/RenderGraph.sln
 RenderGraph/.vsconfig
 
 RenderGraph/.vs/
+
+RenderGraph/LWGUI.csproj

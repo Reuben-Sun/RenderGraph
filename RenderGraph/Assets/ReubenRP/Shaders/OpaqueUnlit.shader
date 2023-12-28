@@ -2,11 +2,28 @@ Shader "RenderGraph/OpaqueLit"
 {
     Properties
     {
-        _MainTex ("Albedo", 2D) = "white" {}
     	_BaseColor("BaseColor", Color) = (1, 1, 1, 1)
+    	
+    	[Main(Surface, _, off, off)] _group("PBR", float) = 0
+    	
+    	[SubToggle(Surface, _ALBEDOMAP)] _EnableAlbedoMap("Enable Albedo Map", Float) = 0.0
+        [Tex(Surface_ALBEDOMAP)] [ShowIf(_EnableAlbedoMap, Equal, 1)] 
+    	_MainTex ("Albedo", 2D) = "white" {}
+        
+    	[Sub(Surface)]_Roughness("Roughness", Range(0,1.0)) = 1.0
+    	[SubToggle(Surface, _ROUGHNESSMAP)] _EnableRoughnessMap("Enable Roughness Map", Float) = 0.0
+        [Tex(Surface_ROUGHNESSMAP)] [ShowIf(_EnableRoughnessMap, Equal, 1)] 
     	_RoughnessMap("RoughnessMap", 2D) = "white" {}
+    	
+    	[Sub(Surface)]_Metallic("Metallic", Range(0,1.0)) = 1.0
+    	[SubToggle(Surface, _METALLICMAP)] _EnableMetallicMap("Enable Metallic Map", Float) = 0.0
+        [Tex(Surface_METALLICMAP)] [ShowIf(_EnableMetallicMap, Equal, 1)] 
     	_MetallicMap("MetallicMap", 2D) = "white" {}
+    	
+        [SubToggle(Surface, _NORMALMAP)] _EnableNormalMap("Enable Normal Map", Float) = 0.0
+    	[Tex(Surface_NORMALMAP)] [ShowIf(_EnableNormalMap, Equal, 1)] 
     	_NormalMap("NormalMap", 2D) = "white" {}
+    	
     }
     SubShader
     {
@@ -21,7 +38,13 @@ Shader "RenderGraph/OpaqueLit"
 			#pragma vertex vert
 			#pragma fragment frag
 			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
-
+			
+            #pragma shader_feature_local _ALBEDOMAP
+            #pragma shader_feature_local _NORMALMAP
+            #pragma shader_feature_local _ROUGHNESSMAP
+            #pragma shader_feature_local _METALLICMAP
+            
+            
 			struct appdata
 			{
 				float4 vertex : POSITION;
@@ -41,6 +64,8 @@ Shader "RenderGraph/OpaqueLit"
             CBUFFER_START(UnityPerMaterial)
             float4 _MainTex_ST;
             half4 _BaseColor;
+            float _Roughness;
+            float _Metallic;
             CBUFFER_END
 
             sampler2D _MainTex;
@@ -70,8 +95,13 @@ Shader "RenderGraph/OpaqueLit"
 
 			GBuffer frag (v2f i) : SV_Target
 			{
-				float3 albedo = tex2D(_MainTex, i.uv).rgb * _BaseColor;
+				float3 albedo = _BaseColor;
+				#if _ALBEDOMAP
+				albedo *= tex2D(_MainTex, i.uv).rgb;
+				#endif
+				
 				float3 emission = 0;
+				#if _NORMALMAP
 				//normal
 				float4 normalMap = tex2D(_NormalMap, i.uv);
 				float3 normalTS = UnpackNormalScale(normalMap, 1);
@@ -79,9 +109,19 @@ Shader "RenderGraph/OpaqueLit"
 				float3 bitangent = sgn * cross(i.normalWS.xyz, i.tangentWS.xyz);
 				half3x3 tangentToWorld = half3x3(i.tangentWS.xyz, bitangent.xyz, i.normalWS.xyz);   //TBN矩阵
                 i.normalWS = TransformTangentToWorld(normalTS, tangentToWorld);
+				#endif
+				
 				//pbr
-				float metallic = tex2D(_MetallicMap, i.uv).r;
-				float roughness = tex2D(_RoughnessMap, i.uv).r;
+				float metallic = _Metallic;
+				#if _METALLICMAP
+				metallic = tex2D(_MetallicMap, i.uv).r;
+				#endif
+				
+				float roughness = _Roughness;
+				#if _ROUGHNESSMAP
+				roughness *= tex2D(_RoughnessMap, i.uv).r;
+				#endif
+				
 				//gbuffer
 				GBuffer gbuffer;
 				gbuffer.MRT0 = half4(albedo, 0);
@@ -93,4 +133,5 @@ Shader "RenderGraph/OpaqueLit"
 			ENDHLSL
         }
     }
+	CustomEditor "LWGUI.LWGUI"
 }
