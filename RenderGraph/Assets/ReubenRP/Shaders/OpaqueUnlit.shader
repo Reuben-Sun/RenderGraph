@@ -132,6 +132,46 @@ Shader "RenderGraph/OpaqueLit"
 			}
 			ENDHLSL
         }
+    	
+    	Pass
+    	{
+    		Tags { "LightMode"="DepthOnlyPass" }
+    		
+    		HLSLPROGRAM
+    		
+			#pragma vertex vert
+			#pragma fragment frag
+			#include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+
+    		struct appdata
+			{
+				float4 vertex : POSITION;
+				float2 uv : TEXCOORD;
+            	float4 tangent : TANGENT;
+            	float4 normal : NORMAL;
+			};
+    		
+    		struct v2f
+            {
+                float4 vertex : SV_POSITION;
+                float2 depth : TEXCOORD0;
+            };
+
+            v2f vert (appdata v)
+            {
+                v2f o;
+                o.vertex = TransformObjectToHClip(v.vertex.xyz);
+                o.depth = o.vertex.zw;
+                return o;
+            }
+
+    		void frag (v2f i)
+            {
+            	// TODO: Clip
+            }
+    		
+    		ENDHLSL
+    	}
     }
 	CustomEditor "LWGUI.LWGUI"
 }
