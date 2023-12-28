@@ -39,3 +39,7 @@ Unity版本2022.3.14f1
 - stencil shading mode
 - GI
 - render feature
+
+### 依赖
+
+[JasonMa0012/LWGUI: A Lightweight, Flexible, Powerful Shader GUI System for Unity. (github.com)](https://github.com/JasonMa0012/LWGUI)
