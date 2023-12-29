@@ -119,7 +119,9 @@ namespace Rendering.Reuben.Shadow
             _box2 = GetLightSpaceAABB(_f2NearCorners, _f2FarCorners, lightDir);
             _box3 = GetLightSpaceAABB(_f3NearCorners, _f3FarCorners, lightDir);
         }
-        
+
+        #region DebugDraw
+
         void DrawAABB(Vector3[] points, Color color)
         {
             // 画线
@@ -163,5 +165,76 @@ namespace Rendering.Reuben.Shadow
             DrawAABB(_box2, Color.green);
             DrawAABB(_box3, Color.cyan);
         }
+
+        #endregion
+
+        #region ConfigCamera
+
+        struct MainCameraSettings
+        {
+            public Vector3 position;
+            public Quaternion rotation;
+            public float nearClipPlane;
+            public float farClipPlane;
+            public float aspect;
+        }
+
+        private MainCameraSettings backupSettings = new MainCameraSettings();
+
+        private void SaveCurrentMainCameraSettings(ref Camera camera)
+        {
+            backupSettings.position = camera.transform.position;
+            backupSettings.rotation = camera.transform.rotation;
+            backupSettings.farClipPlane = camera.farClipPlane;
+            backupSettings.nearClipPlane = camera.nearClipPlane;
+            backupSettings.aspect = camera.aspect;
+        }
+
+        private void RevertMainCameraSettings(ref Camera camera)
+        {
+            camera.transform.position = backupSettings.position;
+            camera.transform.rotation = backupSettings.rotation;
+            camera.farClipPlane = backupSettings.farClipPlane;
+            camera.nearClipPlane = backupSettings.nearClipPlane;
+            camera.aspect = backupSettings.aspect;
+        }
+
+        public void BeginShadowCamera(ref Camera camera)
+        {
+            SaveCurrentMainCameraSettings(ref camera);
+            camera.orthographic = true;
+        }
+
+        public void EndShadowCamera(ref Camera camera)
+        {
+            RevertMainCameraSettings(ref camera);
+            camera.orthographic = false;
+        }
+         
+        public void SetCameraToShadowSpace(ref Camera camera, Vector3 lightDir, int level, float distance)
+        {
+            var box = new Vector3[8];
+            if(level==0) box = _box0; 
+            if(level==1) box = _box1; 
+            if(level==2) box = _box2; 
+            if(level==3) box = _box3;
+
+            // 计算 Box 中点, 宽高比
+            Vector3 center = (box[3] + box[4]) / 2; 
+            float w = Vector3.Magnitude(box[0] - box[4]);
+            float h = Vector3.Magnitude(box[0] - box[2]);
+
+            // 配置相机
+            camera.transform.rotation = Quaternion.LookRotation(lightDir);
+            camera.transform.position = center; 
+            camera.nearClipPlane = -distance;
+            camera.farClipPlane = distance;
+            camera.aspect = w / h;
+            camera.orthographicSize = h * 0.5f;
+        }
+        
+        
+        #endregion
+        
     }
 }
