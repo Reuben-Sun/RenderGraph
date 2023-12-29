@@ -18,3 +18,5 @@ RenderGraph/.vsconfig
 RenderGraph/.vs/
 
 RenderGraph/LWGUI.csproj
+
+RenderGraph/Assembly-CSharp-Editor.csproj
