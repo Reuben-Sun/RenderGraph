@@ -20,12 +20,14 @@ namespace Rendering.Reuben
             using (var builder = renderGraph.AddRenderPass<ShadowCastingPassData>("Shadow Casting Pass", out var passData, new ProfilingSampler("Shadow Casting Pass Profiler")))
             {
                 TextureHandle shadowMap = CreateShadowMap(renderGraph, 1024, 1024);
-                passData.Shadowmap = builder.UseColorBuffer(shadowMap, 0);
+                passData.Shadowmap = builder.UseDepthBuffer(shadowMap, DepthAccess.Write);
                 
                 //Renderer
                 Light sunLight = RenderSettings.sun;
                 Vector3 lightDir = sunLight.transform.rotation * Vector3.forward;
-                    
+                camera.transform.rotation = Quaternion.LookRotation(lightDir);
+                
+                
                 UnityEngine.Rendering.RendererUtils.RendererListDesc OpaqueDesc = new UnityEngine.Rendering.RendererUtils.RendererListDesc(depthOnlyPassName, cull, camera);
                 OpaqueDesc.sortingCriteria = SortingCriteria.CommonOpaque;
                 OpaqueDesc.renderQueueRange = RenderQueueRange.opaque;
@@ -54,7 +56,6 @@ namespace Rendering.Reuben
                     // FilteringSettings filteringSettings = FilteringSettings.defaultValue;
                     // context.renderContext.DrawRenderers(cull, ref drawingSettings, ref filteringSettings);
                 });
-                
                 return passData;
             }
         }
