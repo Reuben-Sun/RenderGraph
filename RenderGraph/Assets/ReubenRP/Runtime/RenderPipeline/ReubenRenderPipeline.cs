@@ -57,10 +57,11 @@ namespace Rendering.Reuben
             {
                 SetupDirectionalLight(cmd);
                 SetupCamera(cmd, mainCamera);
+                ShadowCastingPassData shadowCastingPassData = RenderShadowCastingPass(mainCamera, m_RenderGraph, cull);
                 GBufferPassData gBufferPassData = RenderGBufferPass(mainCamera, m_RenderGraph, cull);
                 ShadingPassData shadingPassData = RenderShadingPass(mainCamera, m_RenderGraph, gBufferPassData);
                 SkyPassData skyPassData = RenderSkyPass(mainCamera, m_RenderGraph, shadingPassData.Destination, gBufferPassData.Depth);
-                RenderFinalBlitPass(mainCamera, m_RenderGraph, skyPassData._Destination);
+                RenderFinalBlitPass(mainCamera, m_RenderGraph, shadowCastingPassData.Shadowmap);
             }
             
             EndCameraRendering(context, mainCamera);

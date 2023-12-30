@@ -165,9 +165,9 @@ Shader "RenderGraph/OpaqueLit"
                 return o;
             }
 
-    		void frag (v2f i)
+    		float4 frag (v2f i) : SV_Target
             {
-            	// TODO: Clip
+            	return float4(i.depth.xy, 0, 0);
             }
     		
     		ENDHLSL
